@@ -20,9 +20,9 @@ pipeline {
 
         stage('Build and run docker image') {
             steps {
-                sh 'sudo docker build -t joamal/myapp:v1 .'
-                sh "sudo docker tag joamal/myapp:v1 joamal/myapp:develop-${env.BUILD_ID}" 
-                sh 'sudo docker run -d -p 8081:80 joamal/myapp:v1'
+                sh 'docker build -t joamal/myapp:v1 .'
+                sh "docker tag joamal/myapp:v1 joamal/myapp:develop-${env.BUILD_ID}" 
+                sh 'docker run -d -p 8081:80 joamal/myapp:v1'
             } 
         }
 
@@ -32,10 +32,10 @@ pipeline {
                 echo 'Building..'
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
-                            sudo docker login -u ${USERNAME} -p ${PASSWORD}
-                            sudo docker push joamal/myapp:v1
+                            docker login -u ${USERNAME} -p ${PASSWORD}
+                            docker push joamal/myapp:v1
                         '''
-                        sh "sudo docker push joamal/myapp:develop-${env.BUILD_ID}"
+                        sh "docker push joamal/myapp:develop-${env.BUILD_ID}"
                     }
             }
         }
