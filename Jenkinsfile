@@ -51,7 +51,7 @@ pipeline {
         //                 sh '''
         //                     ssh -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker pull msalim22/todo-list-app"
         //                     ssh -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker stop todolist-app || true && docker rm todolist-app || true"
-        //                     ssh jjj -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker run --name todolist-app -d -p 9000:3000 msalim22/todo-list-app"
+        //                     ssh jjjj -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker run --name todolist-app -d -p 9000:3000 msalim22/todo-list-app"
         //                 '''
         //             }
         //         }
