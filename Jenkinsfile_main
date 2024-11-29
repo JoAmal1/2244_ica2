@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        
+stage('Build and run docker image') {
+            steps {
+                
+                sh 'docker stop myapp || true && docker rm myapp || true'
+                sh "docker pull joamal/myapp:latest" 
+                sh 'docker run --name myapp -d -p 8082:80 joamal/myapp:latest'
+            } 
+        }
+
+
+      
+        stage('testing') {
+            steps {
+                sh 'curl -I 54.145.136.40:8082'
+            }
+        }
+      
+    }
+}
