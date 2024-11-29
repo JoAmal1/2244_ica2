@@ -47,6 +47,7 @@ stage('Build and run docker image') {
         }
        stage('pushing') {
             steps {
+                  sh "docker push joamal/myapp:latest"
                   sh "docker push joamal/myapp:develop-${env.BUILD_ID}"
             }
         }
