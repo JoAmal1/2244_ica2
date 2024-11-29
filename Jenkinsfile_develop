@@ -21,10 +21,10 @@ pipeline {
         
 stage('Build and run docker image') {
             steps {
-                sh 'docker build -t joamal/myapp:v3 .'
+                sh 'docker build -t joamal/myapp:latest .'
                 sh 'docker stop myapp || true && docker rm myapp || true'
-                sh "docker tag joamal/myapp:v3 joamal/myapp:develop-${env.BUILD_ID}" 
-                sh 'docker run --name myapp -d -p 8081:80 joamal/myapp:v3'
+                sh "docker tag joamal/myapp:latest joamal/myapp:develop-${env.BUILD_ID}" 
+                sh 'docker run --name myapp -d -p 8081:80 joamal/myapp:latest'
             } 
         }
 
@@ -35,7 +35,6 @@ stage('Build and run docker image') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
                             docker login -u ${USERNAME} -p ${PASSWORD}
-                            docker push joamal/myapp:v3
                         '''
                       
                     }
@@ -43,7 +42,7 @@ stage('Build and run docker image') {
         }
         stage('testing') {
             steps {
-                sh 'curl -I 43.204.234.185:8081'
+                sh 'curl -I 54.145.136.40:8080'
             }
         }
        stage('pushing') {
