@@ -58,8 +58,9 @@ pipeline {
                 sshagent(['docker-server']) {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
-                        ssh root@54.145.159.145 "docker login -u $USERNAME -p $PASSWORD"
+                        ssh root@54.145.159.145 "docker tag static-website-nginx:develop-${BUILD_ID} $USERNAME/static-website-nginx:latest"
                         ssh root@54.145.159.145 "docker tag static-website-nginx:develop-${BUILD_ID} $USERNAME/static-website-nginx:develop-${BUILD_ID}"
+                        ssh root@54.145.159.145 "docker push $USERNAME/static-website-nginx:latest"
                         ssh root@54.145.159.145 "docker push $USERNAME/static-website-nginx:develop-${BUILD_ID}"
                         '''
                     }
