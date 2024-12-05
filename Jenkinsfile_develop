@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sshagent(['docker-server']) {
                     sh '''
-                    scp -r Dockerfile Jenkinsfile README.md assets error images index.html root@54.145.159.145:/opt/2244_ica2/
+                    scp -r Dockerfile Jenkinsfile_develop README.md assets error images index.html root@54.145.159.145:/opt/2244_ica2/
                     '''
                 }
             }
