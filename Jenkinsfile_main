@@ -1,23 +1,30 @@
 pipeline {
     agent any
     stages {
-        
-stage('Build and run docker image') {
+        stage('Pull Image') {
             steps {
-                
-                sh 'docker stop myapp || true && docker rm myapp || true'
-                sh "docker pull joamal/myapp:latest" 
-                sh 'docker run --name myapp -d -p 8082:80 joamal/myapp:latest'
-            } 
-        }
-
-
-      
-        stage('testing') {
-            steps {
-                sh 'curl -I 54.145.136.40:8082'
+                sshagent(['docker-server']) {
+                    sh 'ssh root@54.145.159.145 "docker pull joamal/static-website-nginx:latest"'
+                }
             }
         }
-      
+
+        stage('Run Container') {
+            steps {
+                sshagent(['docker-server']) {
+                    sh '''
+                        ssh root@54.145.159.145 "docker stop main-container || true"
+                        ssh root@54.145.159.145 "docker rm main-container || true"
+                        ssh root@54.145.159.145 "docker run --name main-container -d -p 8082:80 joamal/static-website-nginx:latest"
+                    '''
+                }
+            }
+        }
+
+        stage('Test Website') {
+            steps {
+                sh 'curl -I http://54.145.159.145:8082 || exit 1'
+            }
+        }
     }
 }
